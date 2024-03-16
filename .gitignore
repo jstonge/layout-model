@@ -1,2 +1,4 @@
 data/images/
 data/*.json
+outputs/
+slurm*
