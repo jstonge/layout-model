@@ -40,9 +40,7 @@ where
 
 ```
 # if coco output from label-studio, it'll be something like
-python cocosplit.py --annotation-path ../data/result.json \
-                    --train ../data/train.json 
-                    --test ../data/test.json --split-ratio 0.85
+python cocosplit.py --annotation-path ../data/result.json --train ../data/train.json --test ../data/test.json --split-ratio 0.85
 ```
 
  - then run `train_prima.sh`, which might look like for people running on the VACC:
