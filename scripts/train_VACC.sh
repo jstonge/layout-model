@@ -15,5 +15,6 @@ python train_net.py \
     --json_annotation_val   ../data/test.json \
     --image_path_val        ../data/ \
     --config-file           ../configs/fast_rcnn_R_50_FPN_3x.yaml \
+    # --eval-only           \
     OUTPUT_DIR  ../outputs/ \
     SOLVER.IMS_PER_BATCH 2 
