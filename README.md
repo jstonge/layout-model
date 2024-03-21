@@ -13,7 +13,7 @@ layout-model
 ├── data    
 │   ├── images
 │   │   └── *.jpg 
-│   ├── results.json  
+│   ├── {export_pk}_cocos.json  
 │   ├── train.json  
 │   └── test.json  
 ├── outputs     
@@ -26,12 +26,30 @@ layout-model
 where
 
 ```
-# result.json is a COCO formatted file, as exported from label-studio
+# {export_pk}_coco.json is a COCO formatted file, as exported from label-studio
 {
     "images": [{..., "id": int, "file_name": PATH_IMAGE}],
     "categories": [{"id": int}],
     "annotations": [{..., image_id: int, category_id: int, "bbox": [x,y,w,h]}]
 }
+```
+
+You can get this coco file from by first finding the proj `id`:
+
+```
+curl -H "Authorization: Token $LS_TOK" https://app.heartex.com/api/projects/
+```
+
+and then you can find `export_pk` by calling 
+
+```
+curl -H "Authorization: Token $LS_TOK" https://app.heartex.com/api/projects/{id}/exports/ 
+```
+
+then calling the following script located in `data/`:
+
+```
+sh .get_annotations.sh {export_pk}
 ```
 
 ### How to train the models? 
@@ -40,7 +58,7 @@ where
 
 ```
 # if coco output from label-studio, it'll be something like
-python cocosplit.py --annotation-path ../data/result.json --train ../data/train.json --test ../data/test.json --split-ratio 0.85
+python cocosplit.py --annotation-path ../data/{export_pk}_coco.json --train ../data/train_{export_pk}.json --test ../data/test_{export_pk}.json --split-ratio 0.85
 ```
 
  - then run `train_prima.sh`, which might look like for people running on the VACC:
@@ -56,12 +74,12 @@ python cocosplit.py --annotation-path ../data/result.json --train ../data/train.
 
 python train_net.py \
     --dataset_name          cc \
-    --json_annotation_train ../data/train.json \
+    --json_annotation_train ../data/train_{export_pk}.json \
     --image_path_train      ../data/images \
-    --json_annotation_val   ../data/test.json \
+    --json_annotation_val   ../data/test_{export_pk}.json \
     --image_path_val        ../data/images \
     --config-file           ../configs/fast_rcnn_R_50_FPN_3x.yaml \
-    OUTPUT_DIR  ../outputs/ \
+    OUTPUT_DIR  ../outputs-{export_pk}/ \
     SOLVER.IMS_PER_BATCH 2 
 ```
 
