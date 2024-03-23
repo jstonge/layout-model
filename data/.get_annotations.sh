@@ -27,20 +27,20 @@ if [[ $file_type == *"Zip archive data"* ]]; then
     # UNZIP downloaded file
     echo "UNZIP RESULTS"
     unzip tmp.zip
-    mv result.json "${export_pk}_coco.json"
-    rm tmp.zip
-    # rm images/*png
+    mv result.json "${export_pk}_coco.json" && rm tmp.zip
 
+    mkdir "${export_pk}" && mv "${export_pk}_coco.json" "${export_pk}"
+    
     # DOWNLOAD the relevant images from mongoDB
     # echo "DOWNLOAD FROM MONGODB"
-    # cd images/
-    # python .get_png_kitty.py "${export_pk}"
+    cd images/
+    python .get_png_kitty.py "${export_pk}"
 
 
     # UPDATE the image dimensions in the JSON file.
     # echo "UPDATING IMG DIMS"
-    # cd ..
-    # python .resize_images.py "${export_pk}"
+    cd ..
+    python .resize_images.py "${export_pk}/${export_pk}_coco.json"
 
 elif [[ $file_type == *"JSON data"* ]]; then
     echo "The file is a JSON file. Printing contents and exiting."

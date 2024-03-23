@@ -12,6 +12,7 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.data import DatasetMapper, build_detection_train_loader
 
+# https://detectron2.readthedocs.io/en/latest/tutorials/datasets.html#register-a-coco-format-dataset
 from detectron2.data.datasets import register_coco_instances
 
 from detectron2.engine import (
